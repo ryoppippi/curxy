@@ -16,7 +16,7 @@ const OPENAI_ENDPOINT = "https://api.openai.com" as const;
 /**
  * Converts a URL to a local Ollama endpoint
  */
-function convertToLocalOllamaEndpoint(url: string, endpoint: ParsedURL) {
+function convertToCustomEndpoint(url: string, endpoint: ParsedURL) {
   const _url = new URL(url);
   _url.protocol = ensure(endpoint.protocol, is.String);
   _url.host = ensure(endpoint.host, is.String);
@@ -27,7 +27,7 @@ Deno.test("convertToOllamaEndpoint", async () => {
   const { assertEquals } = await import("jsr:@std/testing@0.222.1/asserts");
 
   const url = "https://api.openai.com/v1/chat/completions" as const;
-  const result = convertToLocalOllamaEndpoint(
+  const result = convertToCustomEndpoint(
     url,
     parseURL("http://localhost:11434"),
   );
@@ -67,7 +67,7 @@ app.post("*", async (c) => {
   ensure(json.model, is.String);
   const endpoint = chooseEndpoint(json.model);
 
-  const url = convertToLocalOllamaEndpoint(c.req.url, parseURL(endpoint));
+  const url = convertToCustomEndpoint(c.req.url, parseURL(endpoint));
   const req = new Request(url, c.req.raw);
 
   req.headers.set("Host", ollamaEndpoint);
