@@ -46,7 +46,12 @@ Deno.test("chooseEndpoint", async () => {
   const { assertEquals } = await import("jsr:@std/testing@0.222.1/asserts");
 
   assertEquals(chooseEndpoint("gpt-3.5"), "https://api.openai.com");
-  assertEquals(chooseEndpoint("davinci"), "http://localhost:11434");
+  assertEquals(chooseEndpoint("gpt-3.5-turbo"), "https://api.openai.com");
+  assertEquals(chooseEndpoint("gpt-4-turbo"), "https://api.openai.com");
+  assertEquals(chooseEndpoint("gpt-4-1106-preview"), "https://api.openai.com");
+  assertEquals(chooseEndpoint("llama3"), "http://localhost:11434");
+  assertEquals(chooseEndpoint("mistral-7b-b1.58"), "http://localhost:11434");
+  assertEquals(chooseEndpoint("command-r:35b"), "http://localhost:11434");
 });
 
 /** main **/
