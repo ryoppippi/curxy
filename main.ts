@@ -3,12 +3,15 @@ import { bearerAuth } from "https://deno.land/x/hono@v4.2.5/middleware.ts";
 import { getRandomPort } from "npm:get-port-please@3.1.2";
 import { type ParsedURL, parseURL } from "npm:ufo@1.5.3";
 import { ensure, is, maybe } from "jsr:@core/unknownutil@3.18.0";
+import { match, placeholder as _ } from "jsr:@core/match@0.2.5";
 import { $ } from "jsr:@david/dax@0.40.0";
 
 const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY");
 
 const ollamaEndpoint = maybe(Deno.args.at(0), is.String) ??
   "http://localhost:11434";
+
+const OPENAI_ENDPOINT = "https://api.openai.com" as const;
 
 /**
  * Converts a URL to a local Ollama endpoint
@@ -35,12 +38,8 @@ Deno.test("convertToOllamaEndpoint", async () => {
  * Chooses the appropriate endpoint based on the model name
  */
 function chooseEndpoint(model: string) {
-  switch (true) {
-    case model.startsWith("gpt"):
-      return "https://api.openai.com";
-    default:
-      return ollamaEndpoint;
-  }
+  if (match(_`gpt-${_("v")}`, model) != null) return OPENAI_ENDPOINT;
+  return ollamaEndpoint;
 }
 
 Deno.test("chooseEndpoint", async () => {
