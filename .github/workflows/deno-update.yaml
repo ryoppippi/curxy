@@ -1,0 +1,16 @@
+name: Deno Update
+
+on:
+  schedule:
+    - cron: "0 9 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions: write-all
+
+    steps:
+        - uses: actions/checkout@v4
+        - uses: hasundue/molt-action@v1-rc
+
