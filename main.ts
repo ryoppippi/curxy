@@ -1,10 +1,10 @@
-import { Hono } from "https://deno.land/x/hono@v4.2.5/mod.ts";
-import { bearerAuth } from "https://deno.land/x/hono@v4.2.5/middleware.ts";
-import { getRandomPort } from "npm:get-port-please@3.1.2";
-import { type ParsedURL, parseURL } from "npm:ufo@1.5.3";
-import { ensure, is, maybe } from "jsr:@core/unknownutil@3.18.0";
-import { match, placeholder as _ } from "jsr:@core/match@0.2.5";
-import { $ } from "jsr:@david/dax@0.40.0";
+import { Hono } from "@hono/hono";
+import { bearerAuth } from "@hono/hono/bearer-auth";
+import { getRandomPort } from "get-port-please";
+import { type ParsedURL, parseURL } from "ufo";
+import { ensure, is, maybe } from "@core/unknownutil";
+import { match, placeholder as _ } from "@core/match";
+import { $ } from "@david/dax";
 
 const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY");
 

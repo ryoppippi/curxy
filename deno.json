@@ -2,5 +2,13 @@
   "tasks": {
     "dev": "deno run --watch main.ts",
     "run": "deno run main.ts"
+  },
+  "imports": {
+    "@core/match": "jsr:@core/match@^0.2.5",
+    "@core/unknownutil": "jsr:@core/unknownutil@^3.18.0",
+    "@david/dax": "jsr:@david/dax@^0.40.0",
+    "@hono/hono": "jsr:@hono/hono@^4.4.0",
+    "get-port-please": "npm:get-port-please@^3.1.2",
+    "ufo": "npm:ufo@^1.5.3"
   }
 }

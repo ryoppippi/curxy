@@ -4,9 +4,13 @@
     "specifiers": {
       "jsr:@core/match": "jsr:@core/match@0.2.5",
       "jsr:@core/match@0.2.5": "jsr:@core/match@0.2.5",
+      "jsr:@core/match@^0.2.5": "jsr:@core/match@0.2.5",
       "jsr:@core/unknownutil@3.18.0": "jsr:@core/unknownutil@3.18.0",
+      "jsr:@core/unknownutil@^3.18.0": "jsr:@core/unknownutil@3.18.0",
       "jsr:@david/dax@0.40.0": "jsr:@david/dax@0.40.0",
+      "jsr:@david/dax@^0.40.0": "jsr:@david/dax@0.40.0",
       "jsr:@david/which@0.3": "jsr:@david/which@0.3.0",
+      "jsr:@hono/hono@^4.4.0": "jsr:@hono/hono@4.4.0",
       "jsr:@std/assert@^0.221.0": "jsr:@std/assert@0.221.0",
       "jsr:@std/assert@^0.222.1": "jsr:@std/assert@0.222.1",
       "jsr:@std/bytes@^0.221.0": "jsr:@std/bytes@0.221.0",
@@ -22,9 +26,11 @@
       "npm:@types/node": "npm:@types/node@18.16.19",
       "npm:cloudflared-tunnel": "npm:cloudflared-tunnel@1.0.3",
       "npm:get-port-please@3.1.2": "npm:get-port-please@3.1.2",
+      "npm:get-port-please@^3.1.2": "npm:get-port-please@3.1.2",
       "npm:ts-pattern": "npm:ts-pattern@5.1.1",
       "npm:ts-toolbelt@9.6.0": "npm:ts-toolbelt@9.6.0",
       "npm:ufo@1.5.3": "npm:ufo@1.5.3",
+      "npm:ufo@^1.5.3": "npm:ufo@1.5.3",
       "npm:untun": "npm:untun@0.1.3",
       "npm:untun@0.1.3": "npm:untun@0.1.3"
     },
@@ -51,6 +57,9 @@
       },
       "@david/which@0.3.0": {
         "integrity": "6bdb62c40ac90edcf328e854fa8103a8db21e7c326089cbe3c3a1cf7887d3204"
+      },
+      "@hono/hono@4.4.0": {
+        "integrity": "3a720bde9692549ecef9117b2069b318e9e976a8af7588d9d8f3051b81d95b8d"
       },
       "@std/assert@0.221.0": {
         "integrity": "a5f1aa6e7909dbea271754fd4ab3f4e687aeff4873b4cef9a320af813adb489a"
@@ -2471,5 +2480,15 @@
     "https://deno.land/x/hono@v4.2.5/utils/url.ts": "855169632c61d03703bd08cafb27664ba3fdb352892f01687d5cce8fd49e3cb1",
     "https://deno.land/x/hono@v4.2.5/validator/index.ts": "6c986e8b91dcf857ecc8164a506ae8eea8665792a4ff7215471df669c632ae7c",
     "https://deno.land/x/hono@v4.2.5/validator/validator.ts": "99618538b9b283d854656f7375169c0b5006c7198d64be1dfcd79fc6ea01628a"
+  },
+  "workspace": {
+    "dependencies": [
+      "jsr:@core/match@^0.2.5",
+      "jsr:@core/unknownutil@^3.18.0",
+      "jsr:@david/dax@^0.40.0",
+      "jsr:@hono/hono@^4.4.0",
+      "npm:get-port-please@^3.1.2",
+      "npm:ufo@^1.5.3"
+    ]
   }
 }
