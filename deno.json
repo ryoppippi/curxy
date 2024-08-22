@@ -11,8 +11,8 @@
     "release": "deno run -A npm:bumpp --ignore-scripts"
   },
   "imports": {
-    "@core/match": "jsr:@core/match@^0.2.5",
-    "@core/unknownutil": "jsr:@core/unknownutil@^3.18.0",
+    "@core/match": "jsr:@core/match@^0.3.0",
+    "@core/unknownutil": "jsr:@core/unknownutil@^4.0.0",
     "@hono/hono": "jsr:@hono/hono@^4.4.0",
     "cleye": "npm:cleye@^1.3.2",
     "get-port-please": "npm:get-port-please@^3.1.2",
