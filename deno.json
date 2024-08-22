@@ -6,7 +6,7 @@
     "dev": "deno run --watch main.ts",
     "test": "deno test -A ./*.ts",
     "run": "deno run -A main.ts",
-    "release": "deno run -A npm:bumpp"
+    "release": "deno run -A npm:bumpp --ignore-scripts"
   },
   "imports": {
     "@core/match": "jsr:@core/match@^0.2.5",
