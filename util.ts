@@ -8,7 +8,7 @@ import { assert, ensure, is } from "@core/unknownutil";
 export function validateURL(url: string) {
   assert(url, is.String);
 
-  if (URL.canParse(url)) {
+  if (!URL.canParse(url)) {
     throw new Error("Invalid URL");
   }
 
