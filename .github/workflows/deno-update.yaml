@@ -1,3 +1,5 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+
 name: Deno Update
 
 on:
@@ -5,12 +7,57 @@ on:
     - cron: "0 9 * * *"
   workflow_dispatch: {}
 
+env:
+  DENO_VERSION: 1.x
+
 jobs:
   update:
-    runs-on: ubuntu-latest
     permissions: write-all
+    runs-on: ubuntu-latest
 
     steps:
-        - uses: actions/checkout@v4
-        - uses: hasundue/molt-action@v1-rc
+      - name: Setup repo
+        uses: actions/checkout@v4
 
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: ${{ env.DENO_VERSION }}
+
+      - name: Update dependencies with molt
+        id: run-deno-molt
+        env:
+          NO_COLOR: true
+        run: |
+          {
+            echo 'MOLT_RESULT<<EOF'
+            deno run --allow-all jsr:@molt/cli --write $(find . -type f -name '*.mts' -o -name '*.cts' -o -name '*.mjs' -o -name '*.cjs' -o -name '*.ts' -o -name '*.js' -o -name '*.tsx' -o -name '*.jsx')
+            echo EOF
+          } >> $GITHUB_OUTPUT
+
+      - name: Check
+        run: deno task check
+
+      - name: Run linter
+        run: deno task lint
+
+      - name: Run tests
+        run: deno task test
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore(deps): Update deno dependencies"
+          title: Update Deno dependencies
+          body: |-
+            Some external modules are stale.
+            <details><summary>Details</summary><div>
+
+            ```
+            ${{ steps.run-deno-molt.outputs.MOLT_RESULT }}
+            ```
+
+            </div></details>
+          branch: molt-update
+          author: GitHub <noreply@github.com>
+          delete-branch: true
