@@ -1,88 +1,85 @@
-import { Hono } from "@hono/hono";
-import { bearerAuth } from "@hono/hono/bearer-auth";
 import { getRandomPort } from "get-port-please";
-import { type ParsedURL, parseURL } from "ufo";
-import { ensure, is, maybe } from "@core/unknownutil";
-import { match, placeholder as _ } from "@core/match";
-import { $ } from "@david/dax";
+import { startTunnel } from "untun";
+import { cli } from "cleye";
+import terminalLink from "terminal-link";
+import { bold, green } from "yoctocolors";
+
+import json from "./deno.json" with { type: "json" };
+import { validateURL } from "./util.ts";
+import { createApp } from "./proxy.ts";
+import { ensure, is } from "@core/unknownutil";
 
 const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY");
 
-const ollamaEndpoint = maybe(Deno.args.at(0), is.String) ??
-  "http://localhost:11434";
+const argv = cli({
+  name: json.name.split("/").at(-1) as string,
+  version: json.version,
 
-const OPENAI_ENDPOINT = "https://api.openai.com" as const;
+  flags: {
+    endpoint: {
+      type: validateURL,
+      alias: "e",
+      default: "http://localhost:11434",
+      description:
+        "The endpoint to Ollama server. Default is http://localhost:11434",
+    },
 
-/**
- * Converts a URL to a local Ollama endpoint
- */
-function convertToCustomEndpoint(url: string, endpoint: ParsedURL) {
-  const _url = new URL(url);
-  _url.protocol = ensure(endpoint.protocol, is.String);
-  _url.host = ensure(endpoint.host, is.String);
-  return _url.toString();
-}
+    openAIEndpoint: {
+      type: validateURL,
+      alias: "o",
+      default: "https://api.openai.com",
+      description:
+        "The endpoint to OpenAI server. Default is https://api.openai.com",
+    },
 
-Deno.test("convertToOllamaEndpoint", async () => {
-  const { assertEquals } = await import("jsr:@std/assert@1.0.2");
+    port: {
+      type: Number,
+      alias: "p",
+      default: await getRandomPort(),
+      description: "The port to run the server on. Default is random",
+    },
 
-  const url = "https://api.openai.com/v1/chat/completions" as const;
-  const result = convertToCustomEndpoint(
-    url,
-    parseURL("http://localhost:11434"),
-  );
-  assertEquals(result, "http://localhost:11434/v1/chat/completions");
+    hostname: {
+      type: String,
+      default: "127.0.0.1",
+      description: "The hostname to run the server on. Default is localhost",
+    },
+  },
+
+  help: {
+    description: "A proxy An proxy worker for using ollama in cursor",
+
+    examples: [
+      "curxy",
+
+      "",
+
+      "curxy --endpoint http://localhost:11434 --openAIEndpoint https://api.openai.com --port 8800",
+
+      "",
+
+      "OPENAI_API_KEY=sk-123456 curxy --port 8800",
+    ],
+  },
 });
 
-/**
- * Chooses the appropriate endpoint based on the model name
- */
-function chooseEndpoint(model: string) {
-  if (match(_`gpt-${_("v")}`, model) != null) return OPENAI_ENDPOINT;
-  return ollamaEndpoint;
-}
-
-Deno.test("chooseEndpoint", async () => {
-  const { assertEquals } = await import("jsr:@std/assert@1.0.2");
-
-  assertEquals(chooseEndpoint("gpt-3.5"), "https://api.openai.com");
-  assertEquals(chooseEndpoint("gpt-3.5-turbo"), "https://api.openai.com");
-  assertEquals(chooseEndpoint("gpt-4-turbo"), "https://api.openai.com");
-  assertEquals(chooseEndpoint("gpt-4-1106-preview"), "https://api.openai.com");
-  assertEquals(chooseEndpoint("llama3"), "http://localhost:11434");
-  assertEquals(chooseEndpoint("mistral-7b-b1.58"), "http://localhost:11434");
-  assertEquals(chooseEndpoint("command-r:35b"), "http://localhost:11434");
-});
-
-/** main **/
-const app = new Hono();
-
-if (is.String(OPENAI_API_KEY)) {
-  app.use("*", bearerAuth({ token: OPENAI_API_KEY }));
-}
-
-app.post("*", async (c) => {
-  const json = await c.req.raw.clone().json();
-  /** if model name starts with "gpt" then it is a chat model */
-  ensure(json.model, is.String);
-  const endpoint = chooseEndpoint(json.model);
-
-  const url = convertToCustomEndpoint(c.req.url, parseURL(endpoint));
-  const req = new Request(url, c.req.raw);
-
-  req.headers.set("Host", ollamaEndpoint);
-  return fetch(req);
-});
+const { flags } = argv;
 
 if (import.meta.main) {
-  const port = await getRandomPort();
-  const hostname = "localhost";
-  const protocol = "http";
-  const url = `${protocol}://${hostname}:${port}` as const;
-  if (!URL.canParse(url)) {
-    throw new Error(`Invalid URL: ${url}`);
-  }
+  const app = createApp({
+    openAIEndpoint: flags.openAIEndpoint,
+    ollamaEndpoint: flags.endpoint,
+    OPENAI_API_KEY,
+  });
 
-  Deno.serve({ port, hostname }, app.fetch);
-  await $`cloudflared tunnel --url ${url} --loglevel info`;
+  await Promise.all([
+    Deno.serve({ port: flags.port, hostname: flags.hostname }, app.fetch),
+    startTunnel({ port: flags.port, hostname: flags.hostname })
+      .then(async (tunnel) => ensure(await tunnel?.getURL(), is.String))
+      .then((url) =>
+        console.log(
+          green(`Server running at: ${bold(terminalLink(url, url))}`),
+        )
+      ),
+  ]);
 }
