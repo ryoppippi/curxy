@@ -59,6 +59,8 @@ So, we need a proxy worker that can forward the data to the ollama server.
 
 ![cursor](https://github.com/user-attachments/assets/83a54310-0728-49d8-8c3f-b31e0d8e3e1b)
 
+You can see help message by `deno run -A jsr:@ryoppippi/curxy --help`
+
 ## Related
 
 [Japanese Article](https://zenn.dev/ryoppippi/articles/02c618452a1c9f)
