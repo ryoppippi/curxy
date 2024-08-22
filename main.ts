@@ -23,7 +23,7 @@ const argv = cli({
       description: "The endpoint to Ollama server.",
     },
 
-    openAIEndpoint: {
+    openaiEndpoint: {
       type: validateURL,
       alias: "o",
       default: "https://api.openai.com",
@@ -52,7 +52,7 @@ const argv = cli({
 
       "",
 
-      "curxy --endpoint http://localhost:11434 --openAIEndpoint https://api.openai.com --port 8800",
+      "curxy --endpoint http://localhost:11434 --openai-endpoint https://api.openai.com --port 8800",
 
       "",
 
@@ -65,7 +65,7 @@ const { flags } = argv;
 
 if (import.meta.main) {
   const app = createApp({
-    openAIEndpoint: flags.openAIEndpoint,
+    openAIEndpoint: flags.openaiEndpoint,
     ollamaEndpoint: flags.endpoint,
     OPENAI_API_KEY,
   });
