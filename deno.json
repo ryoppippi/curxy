@@ -5,7 +5,9 @@
   "tasks": {
     "dev": "deno run --watch main.ts",
     "test": "deno test -A ./*.ts",
+    "lint": "deno lint ./**/*.ts",
     "run": "deno run -A main.ts",
+    "check": "deno check ./**/*.ts && deno fmt --check",
     "release": "deno run -A npm:bumpp --ignore-scripts"
   },
   "imports": {
