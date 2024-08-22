@@ -2,7 +2,7 @@ import { getRandomPort } from "get-port-please";
 import { startTunnel } from "untun";
 import { cli } from "cleye";
 import terminalLink from "terminal-link";
-import { bold, green } from "yoctocolors";
+import { bold, green, italic } from "yoctocolors";
 
 import json from "./deno.json" with { type: "json" };
 import { validateURL } from "./util.ts";
@@ -76,7 +76,12 @@ if (import.meta.main) {
       .then(async (tunnel) => ensure(await tunnel?.getURL(), is.String))
       .then((url) =>
         console.log(
-          green(`Server running at: ${bold(terminalLink(url, url))}`),
+          `Server running at: ${bold(terminalLink(url, url))}\n`,
+          green(
+            `enter ${bold(terminalLink(`${url}/v1`, `${url}/v1`))} into ${
+              italic(`Override OpenAl Base URL`)
+            } section in cursor settings`,
+          ),
         )
       ),
   ]);
