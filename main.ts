@@ -24,7 +24,7 @@ function convertToCustomEndpoint(url: string, endpoint: ParsedURL) {
 }
 
 Deno.test("convertToOllamaEndpoint", async () => {
-  const { assertEquals } = await import("jsr:@std/testing@0.222.1/asserts");
+  const { assertEquals } = await import("jsr:@std/assert@1.0.2");
 
   const url = "https://api.openai.com/v1/chat/completions" as const;
   const result = convertToCustomEndpoint(
@@ -43,7 +43,7 @@ function chooseEndpoint(model: string) {
 }
 
 Deno.test("chooseEndpoint", async () => {
-  const { assertEquals } = await import("jsr:@std/testing@0.222.1/asserts");
+  const { assertEquals } = await import("jsr:@std/assert@1.0.2");
 
   assertEquals(chooseEndpoint("gpt-3.5"), "https://api.openai.com");
   assertEquals(chooseEndpoint("gpt-3.5-turbo"), "https://api.openai.com");
