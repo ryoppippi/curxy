@@ -48,18 +48,23 @@ So, we need a proxy worker that can forward the data to the ollama server.
 
    You can get the public URL hosted by cloudflare.
 
-3. Enter the URL provided by cloudflared with /v1 appended to it into the
-   Endpoint field under the OpenAI API Key in Cursor Editor.\
-   Then, add the name of the model you want to use in the Model Names section,
-   and you’ll be able to use any model running on Ollama.
-
-   (Additionally, if you want to restrict access to this Proxy Server for
-   security reasons, you can set the OPENAI_API_KEY as an environment variable,
-   which will enable access restrictions based on the key.)”
+3. Enter the URL provided by `curxy` with /v1 appended to it into the "Override
+   OpenAl Base URL" section of the cursor editor configuration.
 
 ![cursor](https://github.com/user-attachments/assets/83a54310-0728-49d8-8c3f-b31e0d8e3e1b)
 
-You can see help message by `deno run -A jsr:@ryoppippi/curxy --help`
+4. Add model names you want to "Model Names" section of the cursor editor
+   configuration.
+
+![Screenshot 2024-08-22 at 23 42 33](https://github.com/user-attachments/assets/c24fed7c-c61e-46a0-b735-ccf594a96363)
+
+5. (Optional): Additionally, if you want to restrict access to this Proxy Server
+   for security reasons, you can set the OPENAI_API_KEY as an environment
+   variable, which will enable access restrictions based on the key.
+
+6. **Enjoy!**
+
+Also, you can see help message by `deno run -A jsr:@ryoppippi/curxy --help`
 
 ## Related
 
