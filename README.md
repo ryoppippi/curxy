@@ -1,4 +1,7 @@
-# proxy-worker-for-cursor-with-ollama
+# curxy
+
+#### *cursor* + *proxy* = **curxy**
+
 An proxy worker for using ollama in cursor
 
 ## What is this?
