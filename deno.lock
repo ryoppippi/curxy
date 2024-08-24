@@ -4,7 +4,7 @@
     "specifiers": {
       "jsr:@core/match@^0.3.0": "jsr:@core/match@0.3.1",
       "jsr:@core/unknownutil@3.18.0": "jsr:@core/unknownutil@3.18.0",
-      "jsr:@core/unknownutil@^4.0.0": "jsr:@core/unknownutil@4.2.2",
+      "jsr:@core/unknownutil@^4.0.0": "jsr:@core/unknownutil@4.3.0",
       "jsr:@hono/hono@^4.4.0": "jsr:@hono/hono@4.5.8",
       "jsr:@std/assert@1.0.2": "jsr:@std/assert@1.0.2",
       "jsr:@std/assert@^0.222.1": "jsr:@std/assert@0.222.1",
@@ -40,8 +40,8 @@
       "@core/unknownutil@3.18.0": {
         "integrity": "bff7ab4a2f554bbade301127519523b0d3baa4273ecbed51287133ac00a48738"
       },
-      "@core/unknownutil@4.2.2": {
-        "integrity": "3c93c9e17037cd3bf2eae0f00b4f3777b25f85399946a79ef2e25d90d3187a60"
+      "@core/unknownutil@4.3.0": {
+        "integrity": "538a3687ffa81028e91d148818047df219663d0da671d906cecd165581ae55cc"
       },
       "@hono/hono@4.5.8": {
         "integrity": "60f5b4c61edae2016022d6087b4fc381f378d337f046f56e00a3a3512c7e9c16"
