@@ -5,7 +5,7 @@
       "jsr:@core/match@^0.3.0": "jsr:@core/match@0.3.1",
       "jsr:@core/unknownutil@3.18.0": "jsr:@core/unknownutil@3.18.0",
       "jsr:@core/unknownutil@^4.0.0": "jsr:@core/unknownutil@4.3.0",
-      "jsr:@hono/hono@^4.4.0": "jsr:@hono/hono@4.5.8",
+      "jsr:@hono/hono@^4.4.0": "jsr:@hono/hono@4.5.9",
       "jsr:@std/assert@1.0.2": "jsr:@std/assert@1.0.2",
       "jsr:@std/assert@1.0.3": "jsr:@std/assert@1.0.3",
       "jsr:@std/assert@^0.222.1": "jsr:@std/assert@0.222.1",
@@ -45,8 +45,8 @@
       "@core/unknownutil@4.3.0": {
         "integrity": "538a3687ffa81028e91d148818047df219663d0da671d906cecd165581ae55cc"
       },
-      "@hono/hono@4.5.8": {
-        "integrity": "60f5b4c61edae2016022d6087b4fc381f378d337f046f56e00a3a3512c7e9c16"
+      "@hono/hono@4.5.9": {
+        "integrity": "47f561e67aedbd6d1e21e3a1ae26c1b80ffdb62a51c161d502e75bee17ca40af"
       },
       "@std/assert@0.222.1": {
         "integrity": "691637161ee584a9919d1f9950ddd1272feb8e0a19e83aa5b7563cedaf73d74c",
