@@ -3,7 +3,7 @@
   "version": "0.1.5",
   "exports": "./main.ts",
   "tasks": {
-    "dev": "deno run --watch main.ts",
+    "dev": "deno run --watch main.ts --allow-sys --allow-net",
     "test": "deno test -A ./*.ts",
     "lint": "deno lint ./**/*.ts",
     "run": "deno run -A main.ts",

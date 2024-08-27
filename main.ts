@@ -70,9 +70,10 @@ if (import.meta.main) {
     OPENAI_API_KEY,
   });
 
-  await Promise.all([
-    Deno.serve({ port: flags.port, hostname: flags.hostname }, app.fetch),
-    startTunnel({ port: flags.port, hostname: flags.hostname })
+  const server = Deno.serve({ port: flags.port, hostname: flags.hostname }, app.fetch);
+
+  if (Deno.build.os !== "windows") {
+    await startTunnel({ port: flags.port, hostname: flags.hostname })
       .then(async (tunnel) => ensure(await tunnel?.getURL(), is.String))
       .then((url) =>
         console.log(
@@ -83,6 +84,17 @@ if (import.meta.main) {
             } section in cursor settings`,
           ),
         )
+      );
+  } else {
+    console.log(
+      `Server running at: ${bold(`http://${flags.hostname}:${flags.port}`)}\n`,
+      green(
+        `enter ${bold(`http://${flags.hostname}:${flags.port}/v1`)} into ${
+          italic(`Override OpenAl Base URL`)
+        } section in cursor settings`,
       ),
-  ]);
+    );
+  }
+
+  await server.finished;
 }
