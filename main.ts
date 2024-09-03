@@ -42,6 +42,12 @@ const argv = cli({
       default: "127.0.0.1",
       description: "The hostname to run the server on.",
     },
+
+    cloudflared: {
+      type: Boolean,
+      default: true,
+      description: "Use cloudflared to tunnel the server",
+    },
   },
 
   help: {
@@ -72,6 +78,7 @@ if (import.meta.main) {
 
   await Promise.all([
     Deno.serve({ port: flags.port, hostname: flags.hostname }, app.fetch),
+    flags.cloudflared &&
     startTunnel({ port: flags.port, hostname: flags.hostname })
       .then(async (tunnel) => ensure(await tunnel?.getURL(), is.String))
       .then((url) =>
