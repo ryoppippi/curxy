@@ -2,7 +2,6 @@ import { Hono } from "@hono/hono";
 import { bearerAuth } from "@hono/hono/bearer-auth";
 import { assert, is } from "@core/unknownutil";
 import { parseURL } from "ufo";
-
 import { chooseEndpoint, convertToCustomEndpoint } from "./util.ts";
 
 export function createApp(
@@ -18,15 +17,25 @@ export function createApp(
 ) {
   const app = new Hono();
 
-  if (is.String(OPENAI_API_KEY)) {
-    app.use("*", bearerAuth({ token: OPENAI_API_KEY }));
-  }
+  // Apply bearer authentication, but skip it for OPTIONS requests
+  app.use((c, next) => {
+    if (c.req.method !== "OPTIONS") {
+      if (is.String(OPENAI_API_KEY)) {
+        return bearerAuth({ token: OPENAI_API_KEY })(c, next);
+      }
+    }
+    // If the method is OPTIONS, skip the bearerAuth
+    return next();
+  });
 
+  // Handle POST requests
   app.post("*", async (c) => {
     const json = await c.req.raw.clone().json();
     const { model } = json;
-    /** if model name starts with "gpt" then it is a chat model */
+
+    // Validate the request payload
     assert(json, is.ObjectOf({ model: is.String }));
+
     const endpoint = chooseEndpoint({
       model,
       ollamaEndpoint,
@@ -35,9 +44,25 @@ export function createApp(
 
     const url = convertToCustomEndpoint(c.req.url, parseURL(endpoint));
     const req = new Request(url, c.req.raw);
-
     req.headers.set("Host", ollamaEndpoint);
     return fetch(req);
+  });
+
+  // Handle GET requests
+  app.get("*", (c) => {
+    const url = convertToCustomEndpoint(c.req.url, parseURL(ollamaEndpoint));
+    const req = new Request(url, c.req.raw);
+    req.headers.set("Host", ollamaEndpoint);
+    return fetch(req);
+  });
+
+  // Handle OPTIONS requests
+  app.options("*", (c) => {
+    c.header("Allow", "OPTIONS, GET, POST");
+    c.header("Access-Control-Allow-Origin", "*");
+    c.header("Access-Control-Allow-Methods", "OPTIONS, GET, POST");
+    c.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    return c.body(null, 204);
   });
 
   return app;
