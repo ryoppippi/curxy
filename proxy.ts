@@ -49,7 +49,7 @@ export function createApp(
   });
 
   // Handle GET requests
-  app.get("*", async (c) => {
+  app.get("*", (c) => {
     const url = convertToCustomEndpoint(c.req.url, parseURL(ollamaEndpoint));
     const req = new Request(url, c.req.raw);
     req.headers.set("Host", ollamaEndpoint);
@@ -67,4 +67,3 @@ export function createApp(
 
   return app;
 }
-
