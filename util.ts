@@ -29,7 +29,7 @@ export function convertToCustomEndpoint(
 }
 
 Deno.test("convertToOllamaEndpoint", async () => {
-  const { assertEquals } = await import("jsr:@std/assert@1.0.5");
+  const { assertEquals } = await import("jsr:@std/assert@1.0.6");
 
   const url = "https://api.openai.com/v1/chat/completions" as const;
   const result = convertToCustomEndpoint(
