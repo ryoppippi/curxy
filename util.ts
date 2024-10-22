@@ -60,7 +60,7 @@ export function chooseEndpoint(
 }
 
 Deno.test("chooseEndpoint", async () => {
-  const { assertEquals } = await import("jsr:@std/assert@1.0.5");
+  const { assertEquals } = await import("jsr:@std/assert@1.0.6");
 
   const basseOption = {
     ollamaEndpoint: "http://localhost:11434",
