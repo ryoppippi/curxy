@@ -34,7 +34,7 @@ class ProxyApp {
    * @param next - A function to execute the next middleware in the chain.
    * @returns A Promise that resolves to the response object.
    */
-  private handleAllRequest(c: any, next: () => Promise<any>): Promise<Response> {
+  private handleAllRequest(c: any, next: () => Promise<any>): Response {
     if (c.req.method === "OPTIONS") {
       return this.handleOptionsRequest(c);
     }
