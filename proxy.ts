@@ -71,14 +71,14 @@ class ProxyApp {
     return headers;
   }
   /**
-   * 处理验证请求的模型
-   * @param c 
-   * @param json 
-   * @returns 
-   */
+  * Handles model verification requests
+  * @param c - The context object
+  * @param json - The request body
+  * @returns Response or null if verification succeeds
+  */
   private async handleOpenAIModelVerify(c: any, json: any) {
     if (this.isVerifyRequest(c, json)) {
-      const models = await this.getModulesList()
+      const models = await this.getModelsList()
       const modelName = models.find((model: any) => model.name === json.model)?.name || models[0]?.name;
       if (modelName) {
         json.model = modelName;
@@ -144,7 +144,7 @@ class ProxyApp {
     const path = new URL(c.req.url).pathname;
     if (path === '/v1/models') {
       try {
-        const models = await this.getModulesList();
+        const models = await this.getModelsList();
         const headers = this.setCORSHeaders(c.req.raw, c.req.raw.headers.get('origin'));
 
         const formattedResponse = {
@@ -191,7 +191,7 @@ class ProxyApp {
    * Fetches the list of models from the Ollama endpoint.
    * @returns A Promise that resolves to an array of model objects.
    */
-  private async getModulesList(): Promise<any[]> {
+  private async getModelsList(): Promise<any[]> {
     const url = `${this.ollamaEndpoint}/api/tags`;
     const req = new Request(url, {
       method: 'GET',
