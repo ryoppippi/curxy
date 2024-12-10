@@ -38,7 +38,11 @@ class ProxyApp {
     if (c.req.method === "OPTIONS") {
       return this.handleOptionsRequest(c);
     }
-    return bearerAuth({ token: this.OPENAI_API_KEY?.toString() || '' })(c, async () => {
+    if (!this.OPENAI_API_KEY) {
+      return new Response('Unauthorized - API key is required', { status: 401 });
+    }
+    
+    return bearerAuth({ token: this.OPENAI_API_KEY.toString() })(c, async () => {
       // Execute subsequent middleware
       await next();
       // Add CORS headers to the response
