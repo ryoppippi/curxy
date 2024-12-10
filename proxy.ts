@@ -2,7 +2,7 @@ import { Hono } from "@hono/hono";
 import { bearerAuth } from "@hono/hono/bearer-auth";
 import { assert, is } from "@core/unknownutil";
 import { parseURL } from "ufo";
-import { chooseEndpoint, convertToCustomEndpoint } from "./util.ts";
+import { chooseEndpoint, convertToCustomEndpoint, isCursorRequest, isOpenAIModel } from "./util.ts";
 
 /**
  * A class representing a proxy application that handles requests to OpenAI and Ollama endpoints.
@@ -66,7 +66,38 @@ class ProxyApp {
     headers.set('Access-Control-Allow-Credentials', 'true');
     return headers;
   }
-
+  /**
+   * 处理验证请求的模型
+   * @param c 
+   * @param json 
+   * @returns 
+   */
+  private async handleOpenAIModelVerify(c: any, json: any) {
+    if (this.isVerifyRequest(c, json)) {
+      const models = await this.getModulesList()
+      const modelName = models.find((model: any) => model.name === json.model)?.name || models[0]?.name;
+      if (modelName) {
+        json.model = modelName;
+        return null;
+      }else{
+        console.error(`Ollama Model not found: ${json.model}`);
+        return new Response(JSON.stringify({ error: "Model not found" }), {
+          status: 404,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+    }
+  }
+  /**
+   * 验证是否是Cursor的请求
+   * @param c 
+   * @param json 
+   * @returns 
+   */
+  private isVerifyRequest(c: any, json: any) {
+    const origin = c.req.raw.headers.get('Origin');
+    return isOpenAIModel(json.model) && isCursorRequest(origin) && json.stream === false;
+  }
   /**
    * Handles POST requests.
    * @param c - The context object containing request and response information.
@@ -74,15 +105,18 @@ class ProxyApp {
    */
   private async handlePostRequest(c: any): Promise<Response> {
     const json = await c.req.raw.clone().json();
-    console.log(json, 'json-->');
-
     assert(json, is.ObjectOf({ model: is.String }));
-
     const endpoint = chooseEndpoint({
       model: json.model,
       ollamaEndpoint: this.ollamaEndpoint,
       openAIEndpoint: this.openAIEndpoint,
     });
+
+    let res = await this.handleOpenAIModelVerify(c, json);
+    if (res) {
+      return res;
+    }
+
     const origin = new URL(this.ollamaEndpoint).origin;
     const url = convertToCustomEndpoint(c.req.url, parseURL(endpoint));
     const reqHeaders = this.setCORSHeaders(c.req.raw, origin);
@@ -97,52 +131,38 @@ class ProxyApp {
     });
     return fetch(req)
   }
-
   /**
    * Handles GET requests.
    * @param c - The context object containing request and response information.
    * @returns A Promise that resolves to the response object.
    */
-  private handleGetRequest(c: any): Promise<Response> {
-    console.log(c.req.raw.headers, 'get c.req.raw.headers-->');
+  private async handleGetRequest(c: any): Promise<Response> {
     const path = new URL(c.req.url).pathname;
-
     if (path === '/v1/models') {
-      const url = `${this.ollamaEndpoint}/api/tags`;
-      const req = new Request(url, {
-        method: 'GET',
-        headers: new Headers({
-          'Accept': 'application/json',
-        })
-      });
+      try {
+        const models = await this.getModulesList();
+        const headers = this.setCORSHeaders(c.req.raw, c.req.raw.headers.get('origin'));
 
-      return fetch(req)
-        .then(async (res) => {
-          const data = await res.json();
-          const headers = this.setCORSHeaders(res, c.req.raw.headers.get('origin'));
+        const formattedResponse = {
+          object: "list",
+          data: models.map((model: any) => ({
+            id: model.name,
+            object: "model",
+            created: Date.now(),
+            owned_by: "ollama"
+          }))
+        };
 
-          const models = data.models || [];
-          const formattedResponse = {
-            object: "list",
-            data: models.map((model: any) => ({
-              id: model.name,
-              object: "model",
-              created: Date.now(),
-              owned_by: "ollama"
-            }))
-          };
-
-          return new Response(JSON.stringify(formattedResponse), {
-            status: 200,
-            headers: headers
-          });
-        })
-        .catch(error => {
-          return new Response(JSON.stringify({ error: "Failed to fetch models" }), {
-            status: 500,
-            headers: { 'Content-Type': 'application/json' }
-          });
+        return new Response(JSON.stringify(formattedResponse), {
+          status: 200,
+          headers: headers
         });
+      } catch (error) {
+        return new Response(JSON.stringify({ error: "Failed to fetch models" }), {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
     }
 
     const url = convertToCustomEndpoint(c.req.url, parseURL(this.ollamaEndpoint));
@@ -164,6 +184,29 @@ class ProxyApp {
   }
 
   /**
+   * Fetches the list of models from the Ollama endpoint.
+   * @returns A Promise that resolves to an array of model objects.
+   */
+  private async getModulesList(): Promise<any[]> {
+    const url = `${this.ollamaEndpoint}/api/tags`;
+    const req = new Request(url, {
+      method: 'GET',
+      headers: new Headers({
+        'Accept': 'application/json',
+      })
+    });
+
+    try {
+      const res = await fetch(req);
+      const data = await res.json();
+      return data.models || [];
+    } catch (error) {
+      console.error("Failed to fetch models:", error);
+      throw new Error("Failed to fetch models");
+    }
+  }
+
+  /**
    * Creates and returns a Hono application instance.
    * @returns A Hono application instance.
    */
@@ -175,12 +218,10 @@ class ProxyApp {
     });
 
     app.post('*', (c: any) => {
-      console.log(c.req.raw.headers, 'post c.req.raw.headers-->');
       return this.handlePostRequest(c);
     });
 
     app.get('*', (c: any) => {
-      console.log(c.req.raw.headers, 'get c.req.raw.headers-->');
       return this.handleGetRequest(c);
     });
 

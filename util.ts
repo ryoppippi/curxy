@@ -39,6 +39,9 @@ Deno.test("convertToOllamaEndpoint", async () => {
   assertEquals(result, "http://localhost:11434/v1/chat/completions");
 });
 
+export const isCursorRequest = (origin: string) => origin?.toLowerCase() === `vscode-file://vscode-app`;
+
+export const isOpenAIModel = (model: string) => match(_`gpt-${_("v")}`, model) != null;
 /**
  * Chooses the appropriate endpoint based on the model name
  */
@@ -53,7 +56,7 @@ export function chooseEndpoint(
     openAIEndpoint: string;
   },
 ): string {
-  if (match(_`gpt-${_("v")}`, model) != null) {
+  if (isOpenAIModel(model)) {
     return openAIEndpoint;
   }
   return ollamaEndpoint;
