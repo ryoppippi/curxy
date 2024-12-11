@@ -6,7 +6,7 @@ import { bold, green, italic } from "yoctocolors";
 
 import json from "./deno.json" with { type: "json" };
 import { validateURL } from "./util.ts";
-import { createApp } from "./proxy.ts";
+import ProxyApp from "./proxy.ts";
 import { ensure, is } from "@core/unknownutil";
 
 const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY");
@@ -70,11 +70,12 @@ const argv = cli({
 const { flags } = argv;
 
 if (import.meta.main) {
-  const app = createApp({
-    openAIEndpoint: flags.openaiEndpoint,
-    ollamaEndpoint: flags.endpoint,
+  const proxyControl = new ProxyApp(
+    flags.openaiEndpoint,
+    flags.endpoint,
     OPENAI_API_KEY,
-  });
+  );
+  const app = proxyControl.createApp();
 
   await Promise.all([
     Deno.serve({ port: flags.port, hostname: flags.hostname }, app.fetch),
