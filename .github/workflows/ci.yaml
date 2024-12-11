@@ -7,7 +7,7 @@ on:
   pull_request:
 
 env:
-  DENO_VERSION: 1.x
+  DENO_VERSION: 2.x
 
 jobs:
   ci:
