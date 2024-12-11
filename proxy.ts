@@ -2,7 +2,12 @@ import { Hono } from "@hono/hono";
 import { bearerAuth } from "@hono/hono/bearer-auth";
 import { assert, is } from "@core/unknownutil";
 import { parseURL } from "ufo";
-import { chooseEndpoint, convertToCustomEndpoint, isCursorRequest, isOpenAIModel } from "./util.ts";
+import {
+  chooseEndpoint,
+  convertToCustomEndpoint,
+  isCursorRequest,
+  isOpenAIModel,
+} from "./util.ts";
 
 /**
  * A class representing a proxy application that handles requests to OpenAI and Ollama endpoints.
@@ -21,7 +26,7 @@ class ProxyApp {
   constructor(
     openAIEndpoint: string,
     ollamaEndpoint: string,
-    OPENAI_API_KEY: string | undefined
+    OPENAI_API_KEY: string | undefined,
   ) {
     this.openAIEndpoint = openAIEndpoint;
     this.ollamaEndpoint = ollamaEndpoint;
@@ -34,26 +39,37 @@ class ProxyApp {
    * @param next - A function to execute the next middleware in the chain.
    * @returns A Promise that resolves to the response object.
    */
-  private handleAllRequest(c: any, next: () => Promise<any>): Response | Promise<void | Response> {
+  private handleAllRequest(
+    c: any,
+    next: () => Promise<any>,
+  ): Response | Promise<void | Response> {
     if (c.req.method === "OPTIONS") {
       return this.handleOptionsRequest(c);
     }
     if (!this.OPENAI_API_KEY) {
-      return new Response('Unauthorized - API key is required', { status: 401 });
+      return new Response("Unauthorized - API key is required", {
+        status: 401,
+      });
     }
-    
-    return bearerAuth({ token: this.OPENAI_API_KEY.toString() })(c, async () => {
-      // Execute subsequent middleware
-      await next();
-      // Add CORS headers to the response
-      if (c.res) {
-        c.res = new Response(c.res.body, {
-          status: c.res.status,
-          headers: this.setCORSHeaders(c.res, c.req.raw.headers.get('origin'))
-        });
-      }
-      return c.res;
-    });
+
+    return bearerAuth({ token: this.OPENAI_API_KEY.toString() })(
+      c,
+      async () => {
+        // Execute subsequent middleware
+        await next();
+        // Add CORS headers to the response
+        if (c.res) {
+          c.res = new Response(c.res.body, {
+            status: c.res.status,
+            headers: this.setCORSHeaders(
+              c.res,
+              c.req.raw.headers.get("origin"),
+            ),
+          });
+        }
+        return c.res;
+      },
+    );
   }
 
   /**
@@ -64,43 +80,46 @@ class ProxyApp {
    */
   private setCORSHeaders(res: Response, origin: string): Headers {
     const headers = new Headers(res.headers);
-    headers.set('Access-Control-Allow-Origin', origin || '*');
-    headers.set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
-    headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    headers.set('Access-Control-Allow-Credentials', 'true');
+    headers.set("Access-Control-Allow-Origin", origin || "*");
+    headers.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
+    headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    headers.set("Access-Control-Allow-Credentials", "true");
     return headers;
   }
   /**
-  * Handles model verification requests
-  * @param c - The context object
-  * @param json - The request body
-  * @returns Response or null if verification succeeds
-  */
+   * Handles model verification requests
+   * @param c - The context object
+   * @param json - The request body
+   * @returns Response or null if verification succeeds
+   */
   private async handleOpenAIModelVerify(c: any, json: any) {
     if (this.isVerifyRequest(c, json)) {
-      const models = await this.getModelsList()
-      const modelName = models.find((model: any) => model.name === json.model)?.name || models[0]?.name;
+      const models = await this.getModelsList();
+      const modelName = models.find((model: any) =>
+        model.name === json.model
+      )?.name || models[0]?.name;
       if (modelName) {
         json.model = modelName;
         return null;
-      }else{
+      } else {
         console.error(`Ollama Model not found: ${json.model}`);
         return new Response(JSON.stringify({ error: "Model not found" }), {
           status: 404,
-          headers: { 'Content-Type': 'application/json' }
+          headers: { "Content-Type": "application/json" },
         });
       }
     }
   }
   /**
    * 验证是否是Cursor的请求
-   * @param c 
-   * @param json 
-   * @returns 
+   * @param c
+   * @param json
+   * @returns
    */
   private isVerifyRequest(c: any, json: any) {
-    const origin = c.req.raw.headers.get('Origin');
-    return isOpenAIModel(json.model) && isCursorRequest(origin) && json.stream === false;
+    const origin = c.req.raw.headers.get("Origin");
+    return isOpenAIModel(json.model) && isCursorRequest(origin) &&
+      json.stream === false;
   }
   /**
    * Handles POST requests.
@@ -125,15 +144,15 @@ class ProxyApp {
     const url = convertToCustomEndpoint(c.req.url, parseURL(endpoint));
     const reqHeaders = this.setCORSHeaders(c.req.raw, origin);
     // 设置Origin头, 否则ollama会报错
-    reqHeaders.set('Origin', origin);
+    reqHeaders.set("Origin", origin);
     const req = new Request(url, {
       ...c.req.raw,
       method: "POST",
       body: JSON.stringify(json),
       headers: reqHeaders,
-      mode: 'no-cors'
+      mode: "no-cors",
     });
-    return fetch(req)
+    return fetch(req);
   }
   /**
    * Handles GET requests.
@@ -142,10 +161,13 @@ class ProxyApp {
    */
   private async handleGetRequest(c: any): Promise<Response> {
     const path = new URL(c.req.url).pathname;
-    if (path === '/v1/models') {
+    if (path === "/v1/models") {
       try {
         const models = await this.getModelsList();
-        const headers = this.setCORSHeaders(c.req.raw, c.req.raw.headers.get('origin'));
+        const headers = this.setCORSHeaders(
+          c.req.raw,
+          c.req.raw.headers.get("origin"),
+        );
 
         const formattedResponse = {
           object: "list",
@@ -153,23 +175,29 @@ class ProxyApp {
             id: model.name,
             object: "model",
             created: Date.now(),
-            owned_by: "ollama"
-          }))
+            owned_by: "ollama",
+          })),
         };
 
         return new Response(JSON.stringify(formattedResponse), {
           status: 200,
-          headers: headers
+          headers: headers,
         });
       } catch (error) {
-        return new Response(JSON.stringify({ error: "Failed to fetch models" }), {
-          status: 500,
-          headers: { 'Content-Type': 'application/json' }
-        });
+        return new Response(
+          JSON.stringify({ error: "Failed to fetch models" }),
+          {
+            status: 500,
+            headers: { "Content-Type": "application/json" },
+          },
+        );
       }
     }
 
-    const url = convertToCustomEndpoint(c.req.url, parseURL(this.ollamaEndpoint));
+    const url = convertToCustomEndpoint(
+      c.req.url,
+      parseURL(this.ollamaEndpoint),
+    );
     const req = new Request(url, c.req.raw);
     req.headers.set("Host", this.ollamaEndpoint);
     return fetch(req);
@@ -183,7 +211,7 @@ class ProxyApp {
   private handleOptionsRequest(c: any): Response {
     return new Response(null, {
       status: 204,
-      headers: this.setCORSHeaders(c.req.raw, c.req.raw.headers.get('origin'))
+      headers: this.setCORSHeaders(c.req.raw, c.req.raw.headers.get("origin")),
     });
   }
 
@@ -194,10 +222,10 @@ class ProxyApp {
   private async getModelsList(): Promise<any[]> {
     const url = `${this.ollamaEndpoint}/api/tags`;
     const req = new Request(url, {
-      method: 'GET',
+      method: "GET",
       headers: new Headers({
-        'Accept': 'application/json',
-      })
+        "Accept": "application/json",
+      }),
     });
 
     try {
@@ -216,16 +244,16 @@ class ProxyApp {
    */
   public createApp(): Hono {
     const app = new Hono();
-    app.use('*', async (c: any, next: () => Promise<any>) => {
+    app.use("*", async (c: any, next: () => Promise<any>) => {
       // For OPTIONS requests, directly return
       return this.handleAllRequest(c, next);
     });
 
-    app.post('*', (c: any) => {
+    app.post("*", (c: any) => {
       return this.handlePostRequest(c);
     });
 
-    app.get('*', (c: any) => {
+    app.get("*", (c: any) => {
       return this.handleGetRequest(c);
     });
 

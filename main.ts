@@ -70,27 +70,27 @@ const argv = cli({
 const { flags } = argv;
 
 if (import.meta.main) {
-  const proxyControl =  new ProxyApp(
+  const proxyControl = new ProxyApp(
     flags.openaiEndpoint,
     flags.endpoint,
-    OPENAI_API_KEY
+    OPENAI_API_KEY,
   );
-  const app = proxyControl.createApp()
+  const app = proxyControl.createApp();
 
   await Promise.all([
     Deno.serve({ port: flags.port, hostname: flags.hostname }, app.fetch),
     flags.cloudflared &&
-      startTunnel({ port: flags.port, hostname: flags.hostname })
-        .then(async (tunnel) => ensure(await tunnel?.getURL(), is.String))
-        .then((url) =>
-          console.log(
-            `Server running at: ${bold(terminalLink(url, url))}\n`,
-            green(
-              `enter ${bold(terminalLink(`${url}/v1`, `${url}/v1`))} into ${
-                italic(`Override OpenAl Base URL`)
-              } section in cursor settings`,
-            ),
-          )
-        ),
+    startTunnel({ port: flags.port, hostname: flags.hostname })
+      .then(async (tunnel) => ensure(await tunnel?.getURL(), is.String))
+      .then((url) =>
+        console.log(
+          `Server running at: ${bold(terminalLink(url, url))}\n`,
+          green(
+            `enter ${bold(terminalLink(`${url}/v1`, `${url}/v1`))} into ${
+              italic(`Override OpenAl Base URL`)
+            } section in cursor settings`,
+          ),
+        )
+      ),
   ]);
 }

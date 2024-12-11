@@ -53,11 +53,11 @@ jobs:
       - run: deno publish --dry-run
 
   action-timeline:
-    needs: 
+    needs:
       - ci
       - test
       - jsr-publish-dry-run
     if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
-    - uses: Kesin11/actions-timeline@v2
+      - uses: Kesin11/actions-timeline@v2
