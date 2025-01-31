@@ -5,7 +5,7 @@
       "jsr:@core/match@^0.3.0": "jsr:@core/match@0.3.1",
       "jsr:@core/unknownutil@3.18.0": "jsr:@core/unknownutil@3.18.0",
       "jsr:@core/unknownutil@^4.0.0": "jsr:@core/unknownutil@4.3.0",
-      "jsr:@hono/hono@^4.4.0": "jsr:@hono/hono@4.6.19",
+      "jsr:@hono/hono@^4.4.0": "jsr:@hono/hono@4.6.20",
       "jsr:@std/assert@1.0.11": "jsr:@std/assert@1.0.11",
       "jsr:@std/assert@1.0.2": "jsr:@std/assert@1.0.2",
       "jsr:@std/assert@1.0.3": "jsr:@std/assert@1.0.3",
@@ -23,7 +23,7 @@
       "jsr:@std/testing@1.0.0": "jsr:@std/testing@1.0.0",
       "npm:@types/node": "npm:@types/node@18.16.19",
       "npm:bumpp": "npm:bumpp@9.5.1",
-      "npm:cleye@^1.3.2": "npm:cleye@1.3.2",
+      "npm:cleye@^1.3.2": "npm:cleye@1.3.3",
       "npm:cloudflared-tunnel": "npm:cloudflared-tunnel@1.0.3",
       "npm:consola@^3.2.3": "npm:consola@3.2.3",
       "npm:get-port-please@3.1.2": "npm:get-port-please@3.1.2",
@@ -52,8 +52,8 @@
       "@core/unknownutil@4.3.0": {
         "integrity": "538a3687ffa81028e91d148818047df219663d0da671d906cecd165581ae55cc"
       },
-      "@hono/hono@4.6.19": {
-        "integrity": "5ba1bd0ef74449c0a647f029e29896776c30fb64aefbcef8724af4ce4846791b"
+      "@hono/hono@4.6.20": {
+        "integrity": "0db02d7b80db67a17e18b434c6105af002412cada5e908013086eb9fa9466a87"
       },
       "@std/assert@0.222.1": {
         "integrity": "691637161ee584a9919d1f9950ddd1272feb8e0a19e83aa5b7563cedaf73d74c",
@@ -787,8 +787,8 @@
           "escape-string-regexp": "escape-string-regexp@4.0.0"
         }
       },
-      "cleye@1.3.2": {
-        "integrity": "sha512-MngIC2izcCz07iRKr3Pe8Z6ZBv4zbKFl/YnQEN/aMHis6PpH+MxI2e6n0bMUAmSVlMoAyQkdBCSTbfDmtcSovQ==",
+      "cleye@1.3.3": {
+        "integrity": "sha512-co1Mo6qoua2PluWUmfh6NY9f4WkmfykIt/UjP+zYdMCx2rQqvdjh/mAeK7S4hgEChA14hvoYSsC+bb26RYILYg==",
         "dependencies": {
           "terminal-columns": "terminal-columns@1.4.1",
           "type-flag": "type-flag@3.0.0"
