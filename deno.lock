@@ -5,9 +5,10 @@
       "jsr:@core/match@^0.3.0": "jsr:@core/match@0.3.1",
       "jsr:@core/unknownutil@3.18.0": "jsr:@core/unknownutil@3.18.0",
       "jsr:@core/unknownutil@^4.0.0": "jsr:@core/unknownutil@4.3.0",
-      "jsr:@hono/hono@^4.4.0": "jsr:@hono/hono@4.7.5",
+      "jsr:@hono/hono@^4.4.0": "jsr:@hono/hono@4.7.9",
       "jsr:@std/assert@1.0.11": "jsr:@std/assert@1.0.11",
       "jsr:@std/assert@1.0.12": "jsr:@std/assert@1.0.12",
+      "jsr:@std/assert@1.0.13": "jsr:@std/assert@1.0.13",
       "jsr:@std/assert@1.0.2": "jsr:@std/assert@1.0.2",
       "jsr:@std/assert@1.0.3": "jsr:@std/assert@1.0.3",
       "jsr:@std/assert@1.0.5": "jsr:@std/assert@1.0.5",
@@ -54,8 +55,8 @@
       "@core/unknownutil@4.3.0": {
         "integrity": "538a3687ffa81028e91d148818047df219663d0da671d906cecd165581ae55cc"
       },
-      "@hono/hono@4.7.5": {
-        "integrity": "36a7e1b3db8a58e5dc2bd36a76be53346f0966e04c24c635c4d6f58875575b0a"
+      "@hono/hono@4.7.9": {
+        "integrity": "929baffb76209d2ce4c3442bab45957d5dda1726efb82cef13ec3a51d239c543"
       },
       "@std/assert@0.222.1": {
         "integrity": "691637161ee584a9919d1f9950ddd1272feb8e0a19e83aa5b7563cedaf73d74c",
@@ -71,6 +72,12 @@
       },
       "@std/assert@1.0.12": {
         "integrity": "08009f0926dda9cbd8bef3a35d3b6a4b964b0ab5c3e140a4e0351fbf34af5b9a",
+        "dependencies": [
+          "jsr:@std/internal@^1.0.6"
+        ]
+      },
+      "@std/assert@1.0.13": {
+        "integrity": "ae0d31e41919b12c656c742b22522c32fb26ed0cba32975cb0de2a273cb68b29",
         "dependencies": [
           "jsr:@std/internal@^1.0.6"
         ]
@@ -2591,6 +2598,10 @@
       },
       "ufo@1.5.4": {
         "integrity": "sha512-UsUk3byDzKd04EyoZ7U4DOlxQaD14JUKQl6/P7wiX4FNvUfm3XL246n9W5AmqwW5RSFJ27NAuM0iLscAOYUiGQ==",
+        "dependencies": {}
+      },
+      "ufo@1.6.1": {
+        "integrity": "sha512-9a4/uxlTWJ4+a5i0ooc1rU7C7YOw3wT+UGqdeNNHWnOF9qcMBgLRS+4IYUqbczewFx4mLEig6gawh7X6mFlEkA==",
         "dependencies": {}
       },
       "unique-filename@2.0.1": {
