@@ -57,7 +57,7 @@ const command = define({
     "OPENAI_API_KEY=sk-123456 curxy --port 8800",
   ].join("\n"),
 
-  run: async (ctx) => {
+  async run(ctx) {
     validateURL(ctx.values.endpoint);
     validateURL(ctx.values.openaiEndpoint);
 
