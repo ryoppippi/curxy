@@ -72,7 +72,7 @@ const command = define({
         { port: ctx.values.port, hostname: ctx.values.hostname },
         app.fetch,
       ),
-      !ctx.values.cloudflared &&
+      ctx.values.cloudflared &&
       startTunnel({ port: ctx.values.port, hostname: ctx.values.hostname })
         .then(async (tunnel) => ensure(await tunnel?.getURL(), is.String))
         .then((url) =>
