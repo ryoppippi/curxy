@@ -1,6 +1,6 @@
 {
   "name": "@ryoppippi/curxy",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "exports": "./main.ts",
   "tasks": {
     "dev": "deno run --watch main.ts",
