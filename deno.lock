@@ -7,12 +7,13 @@
     "jsr:@hono/hono@^4.4.0": "4.7.4",
     "jsr:@std/assert@1.0.11": "1.0.11",
     "jsr:@std/assert@1.0.12": "1.0.12",
+    "jsr:@std/assert@1.0.13": "1.0.13",
     "jsr:@std/internal@^1.0.5": "1.0.6",
     "jsr:@std/internal@^1.0.6": "1.0.6",
     "npm:@types/node@*": "22.14.1",
     "npm:bumpp@*": "10.1.0",
     "npm:get-port-please@^3.1.2": "3.1.2",
-    "npm:gunshi@~0.23.1": "0.23.1",
+    "npm:gunshi@0.24": "0.24.0",
     "npm:terminal-link@4": "4.0.0",
     "npm:ts-toolbelt@9.6.0": "9.6.0",
     "npm:ufo@^1.5.3": "1.5.4",
@@ -48,6 +49,12 @@
         "jsr:@std/internal@^1.0.6"
       ]
     },
+    "@std/assert@1.0.13": {
+      "integrity": "ae0d31e41919b12c656c742b22522c32fb26ed0cba32975cb0de2a273cb68b29",
+      "dependencies": [
+        "jsr:@std/internal@^1.0.6"
+      ]
+    },
     "@std/internal@1.0.6": {
       "integrity": "9533b128f230f73bd209408bb07a4b12f8d4255ab2a4d22a1fd6d87304aca9a4"
     }
@@ -71,8 +78,8 @@
     "args-tokenizer@0.3.0": {
       "integrity": "sha512-xXAd7G2Mll5W8uo37GETpQ2VrE84M181Z7ugHFGQnJZ50M2mbOv0osSZ9VsSgPfJQ+LVG0prSi0th+ELMsno7Q=="
     },
-    "args-tokens@0.17.1": {
-      "integrity": "sha512-kWceoEa1zXbcBvgy+BT1ddTLyB7B51u32EhOK/ZMY324nxmQAm767HD+g+9avBEPVmoDjWIYLvsSCQqtbcph/g=="
+    "args-tokens@0.18.0": {
+      "integrity": "sha512-jL9s94QUvUBehrX+ptmkgLzvvDGcC62b6ocAv1TU3JKPBEf3OL7qUZI3r6jAI2KF9f6AOuRqwP3+CZBpZBTblA=="
     },
     "bumpp@10.1.0": {
       "integrity": "sha512-cM/4+kO2A2l3aDSL7tr/ALg8TWPihl1fDWHZyz55JlDmzd01Y+8Vq3YQ1ydeKDS4QFN+tKaLsVzhdDIb/cbsLQ==",
@@ -174,8 +181,8 @@
       ],
       "bin": true
     },
-    "gunshi@0.23.1": {
-      "integrity": "sha512-tl4qKJRgr0w5WkAj8jEew9+K7LK58qrFGdNS1GalSVYcnpauWoi/sCq0Kb1JiQLHXB4j62R0erza0BQyw2yO6w==",
+    "gunshi@0.24.0": {
+      "integrity": "sha512-gghYZ1HbTNbId4Uv5GeLtajMPI4DQPQBjjdBzEy7AIvBmQJqnxgKB0CGJXXCcgdKle+JnLH9deqTEz0o17+6sw==",
       "dependencies": [
         "args-tokens"
       ]
@@ -306,7 +313,7 @@
       "jsr:@core/unknownutil@4",
       "jsr:@hono/hono@^4.4.0",
       "npm:get-port-please@^3.1.2",
-      "npm:gunshi@~0.23.1",
+      "npm:gunshi@0.24",
       "npm:terminal-link@4",
       "npm:ufo@^1.5.3",
       "npm:untun@~0.1.3",
