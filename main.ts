@@ -19,6 +19,7 @@ const command = define({
       alias: "e",
       default: "http://localhost:11434",
       description: "The endpoint to Ollama server.",
+      parse: validateURL,
     },
     openaiEndpoint: {
       type: "string",
@@ -26,6 +27,7 @@ const command = define({
       default: "https://api.openai.com",
       description: "The endpoint to OpenAI server.",
       toKebab: true,
+      parse: validateURL,
     },
     port: {
       type: "number",
@@ -59,9 +61,6 @@ const command = define({
   ].join("\n"),
 
   async run(ctx) {
-    validateURL(ctx.values.endpoint);
-    validateURL(ctx.values.openaiEndpoint);
-
     const app = createApp({
       openAIEndpoint: ctx.values.openaiEndpoint,
       ollamaEndpoint: ctx.values.endpoint,
