@@ -12,7 +12,7 @@
     "npm:@types/node@*": "22.14.1",
     "npm:bumpp@*": "10.1.0",
     "npm:get-port-please@^3.1.2": "3.1.2",
-    "npm:gunshi@~0.23.1": "0.23.1",
+    "npm:gunshi@0.25": "0.25.0",
     "npm:terminal-link@4": "4.0.0",
     "npm:ts-toolbelt@9.6.0": "9.6.0",
     "npm:ufo@^1.5.3": "1.5.4",
@@ -71,8 +71,8 @@
     "args-tokenizer@0.3.0": {
       "integrity": "sha512-xXAd7G2Mll5W8uo37GETpQ2VrE84M181Z7ugHFGQnJZ50M2mbOv0osSZ9VsSgPfJQ+LVG0prSi0th+ELMsno7Q=="
     },
-    "args-tokens@0.17.1": {
-      "integrity": "sha512-kWceoEa1zXbcBvgy+BT1ddTLyB7B51u32EhOK/ZMY324nxmQAm767HD+g+9avBEPVmoDjWIYLvsSCQqtbcph/g=="
+    "args-tokens@0.19.0": {
+      "integrity": "sha512-6R86p/npV/8Uk+z9jkDNlPz70s1YrHfSWRpbVbLtmfgKz692ZunVztKcPtBr61lbWW2K9xg6/gM/ZTlEdD7r6Q=="
     },
     "bumpp@10.1.0": {
       "integrity": "sha512-cM/4+kO2A2l3aDSL7tr/ALg8TWPihl1fDWHZyz55JlDmzd01Y+8Vq3YQ1ydeKDS4QFN+tKaLsVzhdDIb/cbsLQ==",
@@ -174,8 +174,8 @@
       ],
       "bin": true
     },
-    "gunshi@0.23.1": {
-      "integrity": "sha512-tl4qKJRgr0w5WkAj8jEew9+K7LK58qrFGdNS1GalSVYcnpauWoi/sCq0Kb1JiQLHXB4j62R0erza0BQyw2yO6w==",
+    "gunshi@0.25.0": {
+      "integrity": "sha512-kZJ75T29DwWd19p5Eh/jR7REGQ6oPVTw40hBc0HXpZ59wG9NYYA8NFUP8hrszNKV4q+sQuYRmzW3igV9tlCj/w==",
       "dependencies": [
         "args-tokens"
       ]
@@ -306,7 +306,7 @@
       "jsr:@core/unknownutil@4",
       "jsr:@hono/hono@^4.4.0",
       "npm:get-port-please@^3.1.2",
-      "npm:gunshi@~0.23.1",
+      "npm:gunshi@0.25",
       "npm:terminal-link@4",
       "npm:ufo@^1.5.3",
       "npm:untun@~0.1.3",
