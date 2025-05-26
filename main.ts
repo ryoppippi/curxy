@@ -15,14 +15,14 @@ const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY");
 const command = define({
   args: {
     endpoint: {
-      type: "string",
+      type: "custom",
       alias: "e",
       default: "http://localhost:11434",
       description: "The endpoint to Ollama server.",
       parse: validateURL,
     },
     openaiEndpoint: {
-      type: "string",
+      type: "custom",
       alias: "o",
       default: "https://api.openai.com",
       description: "The endpoint to OpenAI server.",
