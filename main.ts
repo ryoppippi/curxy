@@ -13,6 +13,7 @@ import { ensure, is } from "@core/unknownutil";
 const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY");
 
 const command = define({
+  toKebab: true,
   args: {
     endpoint: {
       type: "custom",
@@ -26,7 +27,6 @@ const command = define({
       alias: "o",
       default: "https://api.openai.com",
       description: "The endpoint to OpenAI server.",
-      toKebab: true,
       parse: validateURL,
     },
     port: {
