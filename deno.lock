@@ -7,6 +7,7 @@
     "jsr:@hono/hono@^4.4.0": "4.7.4",
     "jsr:@std/assert@1.0.11": "1.0.11",
     "jsr:@std/assert@1.0.12": "1.0.12",
+    "jsr:@std/assert@1.0.13": "1.0.13",
     "jsr:@std/internal@^1.0.5": "1.0.6",
     "jsr:@std/internal@^1.0.6": "1.0.6",
     "npm:@types/node@*": "22.14.1",
@@ -44,6 +45,12 @@
     },
     "@std/assert@1.0.12": {
       "integrity": "08009f0926dda9cbd8bef3a35d3b6a4b964b0ab5c3e140a4e0351fbf34af5b9a",
+      "dependencies": [
+        "jsr:@std/internal@^1.0.6"
+      ]
+    },
+    "@std/assert@1.0.13": {
+      "integrity": "ae0d31e41919b12c656c742b22522c32fb26ed0cba32975cb0de2a273cb68b29",
       "dependencies": [
         "jsr:@std/internal@^1.0.6"
       ]
