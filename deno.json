@@ -15,7 +15,7 @@
     "@core/unknownutil": "jsr:@core/unknownutil@^4.0.0",
     "@hono/hono": "jsr:@hono/hono@^4.4.0",
     "get-port-please": "npm:get-port-please@^3.1.2",
-    "gunshi": "npm:gunshi@^0.25.0",
+    "gunshi": "npm:gunshi@^0.26.0",
     "terminal-link": "npm:terminal-link@^4.0.0",
     "ufo": "npm:ufo@^1.5.3",
     "untun": "npm:untun@^0.1.3",
