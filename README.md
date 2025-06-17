@@ -70,6 +70,14 @@ Also, you can see help message by `deno run -A jsr:@ryoppippi/curxy --help`
 
 [Japanese Article](https://zenn.dev/ryoppippi/articles/02c618452a1c9f)
 
+## Sponsors
+
+<p align="center">
+	<a href="https://github.com/sponsors/ryoppippi">
+		<img src="https://cdn.jsdelivr.net/gh/ryoppippi/sponsors@main/sponsors.svg">
+	</a>
+</p>
+
 ## License
 
 MIT
